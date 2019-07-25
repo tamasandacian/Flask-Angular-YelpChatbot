@@ -1,0 +1,27 @@
+{
+    "properties" : [
+    {
+        "city": "Cambridge",
+        "state" : "MA",
+        "long": -71.10858,
+        "lat": 42.35963
+    },
+    {
+        "city": "Cambridge",
+        "state": "MA",
+        "long": -71.10869,
+        "lat": 42.359103
+    },
+    {
+        "city": "Boston",
+        "state": "MA",
+        "long": -71.110061,
+        "lat": 42.360686
+    },
+    {
+        "city": "Cambridge",
+        "long": -71.110448,
+        "lat": 42.360642
+    }
+    ]
+ }

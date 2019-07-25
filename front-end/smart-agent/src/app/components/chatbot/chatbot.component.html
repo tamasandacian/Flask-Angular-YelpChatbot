@@ -1,0 +1,146 @@
+<app-header></app-header>
+
+<div class="row">
+
+    <div class="col-md-7">
+        <div class="panel panel-default">
+            <!-- <app-leaflet-map></app-leaflet-map> -->
+            <app-map></app-map>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="panel panel-default">
+
+            <div class="box box-success direct-chat direct-chat-success">
+                <!-- <div class="box-header with-border"> -->
+                <div class="box-header">
+                    <h3 class="box-title"> </h3>
+
+                </div>
+
+                <div class="box-body">
+                    <!-- Conversations are loaded here -->
+                    <div class="direct-chat-messages" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+
+                        <ng-container *ngFor="let chat of chats">
+                            <!-- Message. Default to the left -->
+                            <div class="direct-chat-msg" *ngIf="chat?.type =='bot' && !chat?.isMe ">
+                                <div class="direct-chat-info clearfix">
+                                    <span class="direct-chat-name pull-left"> YelpBot</span>
+                                    <!-- <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span> -->
+                                </div>
+                                <!-- /.direct-chat-info -->
+                                <img class="direct-chat-img" src="../../../assets/img/smart_agent_logo.png"
+                                    alt="Message User Image"><!-- /.direct-chat-img -->
+                                <div class="direct-chat-text" style=" display: flex; justify-content: space-between;">
+
+                                    <!-- CHECK IF BOT ANSWER CONTAINS MORE THAN 1 MESSAGE -->
+                                    <div *ngIf="(chat?.message?.answer)?.length > 1; else default_or_dialogflow_message ">
+
+                                        <!-- LOOP THROUGH ALL BOT ANSWERS AND DISPLAY SHOW MORE OR SHOW LESS BUTTON -->
+                                                    <!-- IN CASE MORE THAN 3 RESULTS ARE RETURNED -->
+                                        <div *ngFor="let result of chat?.message?.answer | slice : startPage:paginationLimit let i = index;"
+                                            [ngSwitch]="result._type">
+
+                                             <!-- CHECK IF BOT RETURN RESULT FOUND IN 'restaurant' INDEX -->
+                                            <div class="clearfix" *ngSwitchCase="'rest'">
+                                                <span><a href="{{ result?.website }}">{{ result?.name }}</a></span><br>
+                                                <span class="glyphicon glyphicon-star-empty">{{ result?.rating }}</span><br>
+                                                <span>Address: {{ result?.address }} </span><br>
+                                                <span>Food Type: </span><br>
+                                                <p *ngFor="let c of result?.cuisine" style="float:left; margin-left:5px;">
+                                                <small class="label label-success">{{ c }}</small>
+                                                </p><br><br>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- DISPLAY SHOW MORE SHOW LESS BUTTONS IF MORE RESULTS ARE RETURNED -->
+                                        <button class="btn-sm btn-default" style="border-radius: 12px; margin-right:5px;" *ngIf=" paginationLimit < (chat.message.answer).length" (click)="showMore()">
+                                            Show More
+                                        </button>
+                                        <button class="btn-sm btn-default" style="border-radius: 12px;" *ngIf="paginationLimit > 3" (click)="showLess()">
+                                            Show Less
+                                        </button>
+
+                                    </div>
+
+                                    <!-- CHECK IF BOT ANSWER CONTAINS ONE MESSAGE DISPLAY (WELCOME, ERROR OR DIALOGFLOW MESSAGE) -->
+                                    <ng-template #default_or_dialogflow_message>
+
+                                        <!-- DISPLAY WELCOME MESSAGE AT RENDER PAGE -->
+                                        {{ chat.message[0]?.answer }}
+
+                                        <div *ngFor="let result of chat?.message?.answer" [ngSwitch]="result._type">
+
+                                            <!-- CHECK IF BOT RETURN RESULT FOUND IN 'restaurant' INDEX -->
+                                            <div class="clearfix" *ngSwitchCase="'rest'">
+                                                <span><a href="{{ result?.website }}">{{ result?.name }}</a></span><br>
+                                                <span class="glyphicon glyphicon-star-empty">{{ result?.rating }}</span><br>
+                                                <span>Address: {{ result?.address }} </span><br>
+                                                <span>Food Type: </span><br>
+                                                <p *ngFor="let c of result?.cuisine" style="float:left; margin-left:5px;">
+                                                    <small class="label label-success">{{ c }}</small>
+                                                </p><br><br>
+                                            </div>
+
+                                            <!-- CHECK IF BOT RETURN ERROR MESSAGE OR NOT FOUND -->
+                                            <div class="clearfix" *ngSwitchCase="'error'">
+                                                    <span>{{ result?.message }}</span>
+                                            </div>
+
+                                            <!-- CHECK IF BOT RETURN DIALOGFLOW MESSAGE -->
+                                            <div class="clearfix" *ngSwitchCase="'dialog'">
+                                                <span>{{ result?.message }}</span>
+                                            </div>
+
+                                        </div>
+
+                                    </ng-template>
+
+                                </div>
+                                <!-- /.direct-chat-text -->
+                            </div>
+                            <!-- /.direct-chat-msg -->
+
+                            <!-- Message to the right -->
+                            <div class="direct-chat-msg right" *ngIf="chat?.type !=='bot' && chat?.isMe">
+                                <div class="direct-chat-info clearfix">
+                                    <span class="direct-chat-name pull-right" style="margin-right:13px;">Me</span>
+                                    <!-- <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span> -->
+                                </div>
+                                <!-- /.direct-chat-info -->
+                                <img class="direct-chat-img" src="../../../assets/img/avatar_man.jpg"
+                                    alt="Message User Image">
+                                <div class="direct-chat-text" style="float: right">
+
+                                    {{chat?.message}}
+                                </div>
+                                <!-- /.direct-chat-text -->
+                            </div>
+                            <!-- /.direct-chat-msg -->
+
+                        </ng-container>
+                    </div>
+                    <!--/.direct-chat-messages-->
+
+                </div>
+
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="input-group">
+                        <input type="text" name="message" [(ngModel)]="message" (keyup.enter)="sendMessage()"
+                            placeholder="Type Message ..." class="form-control">
+                        <span class="input-group-btn">
+                            <button (click)="sendMessage()" class="btn btn-default btn-flat">Send</button>
+                        </span>
+                    </div>
+                </div>
+                <!-- /.box-footer-->
+            </div>
+
+        </div>
+    </div>
+
+</div>

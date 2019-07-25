@@ -1,0 +1,33 @@
+<agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom">
+
+  <!-- <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker> -->
+
+  <div *ngIf="propertyList?.length > 1; else display_one_result ">
+
+    <div *ngFor="let property of propertyList">
+      <agm-marker [latitude]="property.latitude" [longitude]="property.longitude"
+        iconUrl="../../../assets/img/marker-icon-blue.png">
+        <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true">
+          <ng-template>
+            {{ property.name }}
+          </ng-template>
+        </agm-snazzy-info-window>
+      </agm-marker>
+    </div>
+  </div>
+  <ng-template #display_one_result>
+
+    <div *ngFor="let property of propertyList">
+
+      <agm-marker [latitude]="property.latitude" [longitude]="property.longitude"
+        iconUrl="../../../assets/img/marker-icon-blue.png">
+        <agm-snazzy-info-window [maxWidth]="200" [closeWhenOthersOpen]="true">
+          <ng-template>
+            {{ property.name }}
+          </ng-template>
+        </agm-snazzy-info-window>
+      </agm-marker>
+    </div>
+  </ng-template>
+
+</agm-map>
