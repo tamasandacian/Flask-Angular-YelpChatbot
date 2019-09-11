@@ -7,8 +7,7 @@ Moreover each restaurant data presents a large number of information taken from 
 
 Currently the project is still in development. More features will come.
 
-Demo:
-![yelp_bot](https://user-images.githubusercontent.com/11573356/61858592-a9616200-aec6-11e9-9722-eed14e4f04d6.png)
+![yelp_chatbot](https://user-images.githubusercontent.com/11573356/64729336-44e17d00-d4dd-11e9-8b8f-28a2c8aa159c.gif)
 
 Core Functionalities:
 ```
